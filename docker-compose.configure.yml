@@ -27,8 +27,6 @@ services:
       - tesla_private
       - tesla_public
     entrypoint: /bin/ash
-    #command: ["-ec", "while :; do echo '.'; sleep 5 ; done"]
-    #command: ["-c", "source /venv/bin/activate && pip install Django==3.2.4 && tesla_ce reconfigure && tesla_ce register_vle --type=moodle --url=moodle.tesla-ce --force-update --client-id=1234 test_vle && tesla_ce register_provider --force-update /etc/tesla/fr_tfr.json && tesla_ce createsuperuser --noinput "]
     command: ["-c", "source /venv/bin/activate && tesla_ce shell < /etc/tesla/init.py && tesla_ce createsuperuser --noinput"]
     depends_on:
       - vault

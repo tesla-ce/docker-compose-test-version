@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import json
 from tesla_ce import models
 from tesla_ce.client import Client
@@ -41,6 +42,10 @@ with open('/etc/tesla/.env_tfr', 'w') as tfr_file:
     tfr_file.write(tfr_content)
 
 # Configure DB parameters
+=======
+from tesla_ce import models
+
+>>>>>>> 6f9ed59f1c0f2a443b030bb996fba0fe63cf3714
 institution = models.Institution.objects.get(id=1)
 institution.external_ic = True
 institution.save()
@@ -53,5 +58,8 @@ prov = models.Provider.objects.get(id=1)
 prov.validation_active = True
 prov.enabled = True
 prov.save()
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 6f9ed59f1c0f2a443b030bb996fba0fe63cf3714

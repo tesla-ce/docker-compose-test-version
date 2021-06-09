@@ -23,6 +23,7 @@ In Linux or Mac OS you need to edit /etc/hosts
 
 In OS Windows you need to edit c:\Windows\System32\drivers\etc\hosts
 
+
 ## Observations:
 If used domain (tesla-ce in the example) is not a valid domain, the generated certificates are self-signed. In order your browser accept them, first visit:
 - https://api.tesla-ce
@@ -51,6 +52,5 @@ docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core
 ```
 docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core.yml -f docker-compose.moodle.yml -f docker-compose.tfr.yml stop
 ```
-
 
 If you remove containers, remember to reconfigure.
