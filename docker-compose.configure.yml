@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   configure:
-    image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    image: teslace/core:edge
     healthcheck:
       test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
       start_period: 20s

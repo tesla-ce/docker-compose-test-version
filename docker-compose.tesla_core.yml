@@ -1,7 +1,7 @@
 version: '3.5'
 services:
   api:
-    image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    image: teslace/core:edge
     healthcheck:
       test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
       start_period: 20s
@@ -57,7 +57,7 @@ services:
       - api
       - traefik
   worker:
-    image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    image: teslace/core:edge
     command: /venv/bin/celery -A tesla_ce worker -E -l info -P gevent -n worker-all
     healthcheck:
       test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
@@ -77,7 +77,7 @@ services:
       - api
       - rabbitmq
   beat:
-    image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    image: teslace/core:edge
     command: /venv/bin/celery -A tesla_ce beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
     healthcheck:
       test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
