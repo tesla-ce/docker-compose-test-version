@@ -1,0 +1,64 @@
+version: '3.5'
+services:
+  moodle_database:
+    image: mariadb:10.4
+    volumes:
+      - ./_data/database_moodle:/var/lib/mysql
+    env_file:
+      - .env_moodle
+    networks:
+      - tesla_public
+  moodle:
+    image: registry.sunai.uoc.edu/tesla-ce/teslace-moodle-plugin:latest
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.moodle.rule=Host(`moodle.tesla-ce`)"
+      - "traefik.http.routers.moodle.entrypoints=https"
+      - "traefik.http.routers.moodle.tls.certresolver=tesla-tlschallenge"
+      - "traefik.http.services.moodle-service.loadbalancer.server.port=80"
+      - "traefik.http.routers.moodle.service=moodle-service"
+    env_file:
+      - .env_moodle
+    volumes:
+      - moodle_volume:/var/moodledata
+    networks:
+      - tesla_public
+      - tesla_private
+    depends_on:
+      - moodle_database
+      - traefik
+      - api
+    external_links:
+      - "traefik:api"
+      - "traefik:api.tesla-ce"
+  lti:
+    image: registry.sunai.uoc.edu/tesla-ce/lti:latest-alpine
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lti.rule=Host(`lti.tesla-ce`)"
+      - "traefik.http.routers.lti.entrypoints=https"
+      - "traefik.http.routers.lti.tls.certresolver=tesla-tlschallenge"
+      - "traefik.http.services.lti-service.loadbalancer.server.port=5000"
+      - "traefik.http.routers.lti.service=lti-service"
+    env_file:
+      - .env_moodle
+    networks:
+      - tesla_public
+    depends_on:
+      - traefik
+      - api
+    external_links:
+      - "traefik:api"
+      - "traefik:api.tesla-ce"
+
+volumes:
+  moodle_volume:
+    driver_opts:
+      type: none
+      device: ./_data/moodle
+      o: bind
+networks:
+  tesla_public:
+    external: true
+  tesla_private:
+    external: true

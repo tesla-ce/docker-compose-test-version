@@ -1,0 +1,19 @@
+{
+  "ui": true,
+  "backend": {
+    "mysql": {
+      "ha_enabled": "true",
+      "address" : "database:3306",
+      "username": "vault",
+      "password": "vault_pass",
+      "database": "vault"
+    }
+  },
+  "listener": {
+    "tcp": {
+      "address": "0.0.0.0:8200",
+      "tls_disable": true
+    }
+  },
+  "disable_mlock": true
+}
