@@ -1,0 +1,41 @@
+version: '3.5'
+services:
+  configure:
+    image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    healthcheck:
+      test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
+      start_period: 20s
+      interval: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`tesla-ce`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=https"
+      - "traefik.http.routers.api.tls.certresolver=tesla-tlschallenge"
+      - "traefik.http.services.api-service.loadbalancer.server.port=5000"
+      - "traefik.http.routers.api.service=api-service"
+    volumes:
+    - ./config:/etc/tesla
+    environment:
+      VAULT_TOKEN: sRRkAJtED7TmrbSf3zheD3LM
+      VAULT_URL: http://vault:8200
+      DJANGO_SETTINGS_MODULE: tesla_ce.settings
+      DJANGO_CONFIGURATION: Dev
+      DJANGO_SUPERUSER_PASSWORD: admin
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_EMAIL: admin@tesla-ce.eu
+    networks:
+      - tesla_private
+      - tesla_public
+    entrypoint: /bin/ash
+    #command: ["-ec", "while :; do echo '.'; sleep 5 ; done"]
+    #command: ["-c", "source /venv/bin/activate && pip install Django==3.2.4 && tesla_ce reconfigure && tesla_ce register_vle --type=moodle --url=moodle.tesla-ce --force-update --client-id=1234 test_vle && tesla_ce register_provider --force-update /etc/tesla/fr_tfr.json && tesla_ce createsuperuser --noinput "]
+    command: ["-c", "source /venv/bin/activate && tesla_ce shell < /etc/tesla/init.py && tesla_ce createsuperuser --noinput"]
+    depends_on:
+      - vault
+      - database
+      - storage.tesla-ce
+networks:
+  tesla_public:
+    external: true
+  tesla_private:
+    external: true

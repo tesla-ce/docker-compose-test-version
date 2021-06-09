@@ -1,0 +1,103 @@
+version: '3.5'
+services:
+  api:
+    image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    healthcheck:
+      test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
+      start_period: 20s
+      interval: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.rule=Host(`api.tesla-ce`) && (PathPrefix(`/api`) || PathPrefix(`/lapi`))"
+      - "traefik.http.routers.api.entrypoints=https"
+      - "traefik.http.routers.api.tls.certresolver=tesla-tlschallenge"
+      - "traefik.http.services.api-service.loadbalancer.server.port=5000"
+      - "traefik.http.routers.api.service=api-service"
+    volumes:
+      - ./config:/etc/tesla
+    environment:
+      VAULT_TOKEN: sRRkAJtED7TmrbSf3zheD3LM
+      VAULT_URL: http://vault:8200
+      DJANGO_SETTINGS_MODULE: tesla_ce.settings
+      DJANGO_CONFIGURATION: Dev
+      TESLA_RUN_AS_MODULE: api,lapi,dashboards
+      DJANGO_ALLOWED_HOSTS: '*'
+      SENTRY_ENABLED: 1
+      SENTRY_DSN: https://c55b16501c0248d990612cbb054a649d@sentry.sunai.uoc.edu/5
+    networks:
+      - tesla_private
+      - tesla_public
+    depends_on:
+      - redis
+      - vault
+      - database
+      - traefik
+      - storage.tesla-ce
+      - rabbitmq
+  dashboards:
+    #image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    image: registry.sunai.uoc.edu/tesla-ce/angular/tesla-ce:latest
+    #healthcheck:
+    #  test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
+    #  start_period: 20s
+    #  interval: 30s
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboards.rule=Host(`tesla-ce`) && PathPrefix(`/ui`)"
+      - "traefik.http.routers.dashboards.entrypoints=https"
+      - "traefik.http.routers.dashboards.tls.certresolver=tesla-tlschallenge"
+      - "traefik.http.services.dashboards-service.loadbalancer.server.port=80"
+      - "traefik.http.routers.dashboards.service=dashboards-service"
+    environment:
+      API_URL: https://tesla-ce/api/v2
+    networks:
+      - tesla_private
+      - tesla_public
+    depends_on:
+      - api
+      - traefik
+  worker:
+    image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    command: /venv/bin/celery -A tesla_ce worker -E -l info -P gevent -n worker-all
+    healthcheck:
+      test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
+      start_period: 20s
+      interval: 30s
+    environment:
+      VAULT_TOKEN: sRRkAJtED7TmrbSf3zheD3LM
+      VAULT_URL: http://vault:8200
+      DJANGO_SETTINGS_MODULE: tesla_ce.settings
+      DJANGO_CONFIGURATION: Dev
+      TESLA_RUN_AS_MODULE: worker-all
+    networks:
+      - tesla_private
+    depends_on:
+      - vault
+      - database
+      - api
+      - rabbitmq
+  beat:
+    image: registry.sunai.uoc.edu/tesla-ce/tesla-ce:latest
+    command: /venv/bin/celery -A tesla_ce beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    healthcheck:
+      test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
+      start_period: 20s
+      interval: 30s
+    environment:
+      VAULT_TOKEN: sRRkAJtED7TmrbSf3zheD3LM
+      VAULT_URL: http://vault:8200
+      DJANGO_SETTINGS_MODULE: tesla_ce.settings
+      DJANGO_CONFIGURATION: Dev
+      TESLA_RUN_AS_MODULE: beat
+    networks:
+      - tesla_private
+    depends_on:
+      - vault
+      - database
+      - api
+      - rabbitmq
+networks:
+  tesla_public:
+    external: true
+  tesla_private:
+    external: true

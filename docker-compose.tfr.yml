@@ -1,0 +1,26 @@
+version: '3.5'
+services:
+  tfr_provider:
+    image: registry.sunai.uoc.edu/tesla-ce/providers/tfr:latest
+    entrypoint: /bin/ash
+    command: ["-ec", "while :; do echo '.'; sleep 5 ; done"]
+
+    #command: /venv/bin/celery -A tesla_provider worker -l info -O fair
+    healthcheck:
+      test: /venv/bin/celery -A tesla_provider inspect ping || exit 1
+      interval: 60s
+      timeout: 60s
+      retries: 3
+    env_file:
+      - ./config/.env_tfr
+    networks:
+      - tesla_public
+      - tesla_private
+    depends_on:
+      - api
+
+networks:
+  tesla_public:
+    external: true
+  tesla_private:
+    external: true
