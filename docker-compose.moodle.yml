@@ -18,11 +18,7 @@ services:
       - "traefik.http.services.moodle-service.loadbalancer.server.port=80"
       - "traefik.http.routers.moodle.service=moodle-service"
     env_file:
-<<<<<<< HEAD
       - ./config/.env_moodle
-=======
-      - .env_moodle
->>>>>>> 6f9ed59f1c0f2a443b030bb996fba0fe63cf3714
     volumes:
       - moodle_volume:/var/moodledata
     networks:
