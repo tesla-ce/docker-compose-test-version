@@ -29,8 +29,7 @@ services:
       - traefik
       - api
     external_links:
-      - "traefik:api"
-      - "traefik:api.tesla-ce"
+      - "traefik:tesla-ce"
   lti:
     image: registry.sunai.uoc.edu/tesla-ce/lti:latest-alpine
     labels:
@@ -48,8 +47,7 @@ services:
       - traefik
       - api
     external_links:
-      - "traefik:api"
-      - "traefik:api.tesla-ce"
+      - "traefik:tesla-ce"
 
 volumes:
   moodle_volume:

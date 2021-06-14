@@ -2,6 +2,11 @@
 
 This repository provides a fast deploy of TeSLA CE system for evaluation and testing purposes. Do not intent to use it in production environment. Vault is started in dev mode and data will be lost when container is destroyed. 
 
+It is necessary access to private repository to use:
+- Dashboard
+- Moodle
+- LTI 
+
 ## Instructions
 
 1. Execute preinstall script (preinstall.sh) and get moodle information and FR provider information.
@@ -26,7 +31,7 @@ In OS Windows you need to edit c:\Windows\System32\drivers\etc\hosts
 
 ## Observations:
 If used domain (tesla-ce in the example) is not a valid domain, the generated certificates are self-signed. In order your browser accept them, first visit:
-- https://api.tesla-ce
+- https://tesla-ce
 - https://moodle.tesla-ce
 - https://lti.tesla-ce
 - https://storage.tesla-ce
@@ -41,11 +46,12 @@ docker-compose -f docker-compose.tesla_services.yml up -d
 # Second start TeSLA Core
 docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core.yml up -d
 
-# Third start Face Recognition provider 
+# Third moodle
+docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core.yml -f docker-compose.moodle.yml up -d
+
+# Fourth start Face Recognition provider 
 docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core.yml -f docker-compose.tfr.yml up -d
 
-# Fourth moodle
-docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core.yml -f docker-compose.moodle.yml up -d
 ```
 
 ## Shutdown TeSLA CE environment:
@@ -54,3 +60,15 @@ docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core
 ```
 
 If you remove containers, remember to reconfigure.
+
+## Moodle
+
+Default data:
+
+| Field | Value |
+|---|---|
+| User | moodle |
+| Password | admintesla |
+
+
+ 

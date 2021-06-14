@@ -31,7 +31,26 @@ services:
     depends_on:
       - vault
       - database
-      - storage.tesla-ce
+      - storage
+      - traefik
+    external_links:
+      - "traefik:storage.tesla-ce"
+
+  configure_mc:
+    image: minio/mc
+    entrypoint: ['/etc/tesla/conf_minio.sh']
+    #command: ["-ec", "while :; do echo '.'; sleep 5 ; done"]
+    #command: ['mc alias set minio https://storage.tesla-ce minioadmin minioadmin --insecure', '&&', 'mc policy set download minio/tesla-public --insecure']
+    volumes:
+      - ./config:/etc/tesla
+    depends_on:
+      - storage
+      - traefik
+    external_links:
+      - "traefik:storage.tesla-ce"
+    networks:
+      - tesla_private
+      - tesla_public
 networks:
   tesla_public:
     external: true

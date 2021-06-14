@@ -60,7 +60,7 @@ services:
     networks:
       - tesla_public
       - tesla_private
-  storage.tesla-ce:
+  storage:
     image: minio/minio
     volumes:
       - minio_volume:/data

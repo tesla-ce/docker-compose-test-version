@@ -17,3 +17,4 @@ cp .env_tfr ./config/env_tfr_template
 
 # UP services with configure
 docker-compose -f docker-compose.tesla_services.yml -f docker-compose.configure.yml up configure
+docker-compose -f docker-compose.tesla_services.yml -f docker-compose.configure.yml up configure_mc
