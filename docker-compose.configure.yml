@@ -14,7 +14,7 @@ services:
       - "traefik.http.services.api-service.loadbalancer.server.port=5000"
       - "traefik.http.routers.api.service=api-service"
     volumes:
-    - ./config:/etc/tesla
+    - ${PWD}/config:/etc/tesla
     environment:
       VAULT_TOKEN: sRRkAJtED7TmrbSf3zheD3LM
       VAULT_URL: http://vault:8200
@@ -42,7 +42,7 @@ services:
     #command: ["-ec", "while :; do echo '.'; sleep 5 ; done"]
     #command: ['mc alias set minio https://storage.tesla-ce minioadmin minioadmin --insecure', '&&', 'mc policy set download minio/tesla-public --insecure']
     volumes:
-      - ./config:/etc/tesla
+      - ${PWD}/config:/etc/tesla
     depends_on:
       - storage
       - traefik

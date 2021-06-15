@@ -106,27 +106,27 @@ volumes:
   db_volume:
     driver_opts:
       type: none
-      device: ./_data/db
+      device: ${PWD}/_data/db
       o: bind
   redis_volume:
     driver_opts:
       type: none
-      device: ./_data/redis
+      device: ${PWD}/_data/redis
       o: bind
   minio_volume:
     driver_opts:
       type: none
-      device: ./_data/minio
+      device: ${PWD}/_data/minio
       o: bind
   rabbitmq_volume:
     driver_opts:
       type: none
-      device: ./_data/rabbitmq
+      device: ${PWD}/_data/rabbitmq
       o: bind
   traefik_data:
     driver_opts:
       type: none
-      device: ./_data/traefik
+      device: ${PWD}/_data/traefik
       o: bind
 networks:
   tesla_public:

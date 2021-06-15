@@ -3,7 +3,7 @@ services:
   moodle_database:
     image: mariadb:10.4
     volumes:
-      - ./_data/database_moodle:/var/lib/mysql
+      - ${PWD}/_data/database_moodle:/var/lib/mysql
     env_file:
       - .env_moodle
     networks:
@@ -18,7 +18,7 @@ services:
       - "traefik.http.services.moodle-service.loadbalancer.server.port=80"
       - "traefik.http.routers.moodle.service=moodle-service"
     env_file:
-      - ./config/.env_moodle
+      - ${PWD}/config/.env_moodle
     volumes:
       - moodle_volume:/var/moodledata
     networks:
@@ -53,7 +53,7 @@ volumes:
   moodle_volume:
     driver_opts:
       type: none
-      device: ./_data/moodle
+      device: ${PWD}/_data/moodle
       o: bind
 networks:
   tesla_public:

@@ -14,7 +14,7 @@ services:
       - "traefik.http.services.api-service.loadbalancer.server.port=5000"
       - "traefik.http.routers.api.service=api-service"
     volumes:
-      - ./config:/etc/tesla
+      - ${PWD}/config:/etc/tesla
     environment:
       VAULT_TOKEN: sRRkAJtED7TmrbSf3zheD3LM
       VAULT_URL: http://vault:8200
