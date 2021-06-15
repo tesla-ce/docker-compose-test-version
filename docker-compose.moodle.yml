@@ -40,7 +40,7 @@ services:
       - "traefik.http.services.lti-service.loadbalancer.server.port=5000"
       - "traefik.http.routers.lti.service=lti-service"
     env_file:
-      - ./config/.env_moodle
+      - ${PWD}/config/.env_moodle
     networks:
       - tesla_public
     depends_on:
