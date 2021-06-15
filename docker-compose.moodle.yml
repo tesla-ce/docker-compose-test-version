@@ -5,7 +5,7 @@ services:
     volumes:
       - ${PWD}/_data/database_moodle:/var/lib/mysql
     env_file:
-      - .env_moodle
+      - ${PWD}/.env_moodle
     networks:
       - tesla_public
   moodle:
