@@ -16,13 +16,13 @@ It is necessary access to private repository to use:
 
 2. Edit your local machine DNS the following entries:
 
-| Domain  |  Address |
+|Address | Domain |
 |---|---|
-| lti.tesla-ce  | 127.0.0.1 |
-| api.tesla-ce  | 127.0.0.1 |
-| moodle.tesla-ce  | 127.0.0.1 |
-| storage.tesla-ce  | 127.0.0.1 |
-| tesla-ce  | 127.0.0.1 |
+| 127.0.0.1 | lti.tesla-ce |
+| 127.0.0.1 | api.tesla-ce |
+| 127.0.0.1 | moodle.tesla-ce |
+| 127.0.0.1 | storage.tesla-ce |
+| 127.0.0.1 | tesla-ce |
 
 In Linux or Mac OS you need to edit /etc/hosts
 

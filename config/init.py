@@ -2,10 +2,18 @@ import json
 from tesla_ce import models
 from tesla_ce.client import Client
 from tesla_ce.client import ConfigManager
+from tesla_ce.lib.exception import TeslaConfigException
+
 
 # reconfigure
-client = Client(config_file=ConfigManager.find_config_file(), use_vault=False, use_env=False, enable_management=True)
-client.initialize()
+reconfigured = False
+while not reconfigured:
+    try:
+        client = Client(config_file=ConfigManager.find_config_file(), use_vault=False, use_env=False, enable_management=True)
+        client.initialize()
+        reconfigured = True
+    except TeslaConfigException:
+        pass
 
 # register_vle
 type = 'moodle'
