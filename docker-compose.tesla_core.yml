@@ -1,6 +1,8 @@
 version: '3.5'
 services:
   api:
+    #entrypoint: /bin/ash
+    #command: ["-ec", "while :; do echo '.'; sleep 5 ; done"]
     image: teslace/core:edge
     healthcheck:
       test: ["CMD-SHELL", "/venv/bin/tesla_ce check"]
@@ -24,6 +26,8 @@ services:
       DJANGO_ALLOWED_HOSTS: '*'
       SENTRY_ENABLED: 1
       SENTRY_DSN: https://c55b16501c0248d990612cbb054a649d@sentry.sunai.uoc.edu/5
+      DEBUG_AUTHENTICATION_OBJECT: admin,1
+      DEBUG_AUTHENTICATION: 1
     networks:
       - tesla_private
       - tesla_public

@@ -45,7 +45,44 @@ If used domain (tesla-ce in the example) is not a valid domain, the generated ce
 
 And accept the provided certificate.
 
-## Start TeSLA CE environment:
+## Start TeSLA CE environment with make:
+
+### All process
+```
+make
+```
+
+### First configure.
+```
+make configure
+```
+
+### Second start core
+```
+make core
+```
+
+### Third start moodle
+```
+make moodle
+```
+
+### Fourth start provider-tfr
+```
+make provider-tfr
+```
+
+## Shutdown TeSLA CE environment with make:
+```
+make stop
+```
+
+## Clean TeSLA CE environment with make:
+```
+make clean
+```
+
+## Start TeSLA CE environment without make:
 
 ### First of all start services.
 ```
@@ -69,7 +106,7 @@ docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core
 docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core.yml -f docker-compose.tfr.yml up -d
 ```
 
-## Shutdown TeSLA CE environment:
+## Shutdown TeSLA CE environment without make:
 ```
 docker-compose -f docker-compose.tesla_services.yml -f docker-compose.tesla_core.yml -f docker-compose.moodle.yml -f docker-compose.tfr.yml stop
 ```
